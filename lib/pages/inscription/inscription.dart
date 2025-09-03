@@ -1,6 +1,7 @@
 import 'package:demai_app/data/palletCouleurs.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:demai_app/data/responsive.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class InscriptionScreen extends StatefulWidget {
@@ -15,6 +16,8 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final res = Responsive(context);
+
     return Scaffold(
       backgroundColor: Pallet.backgroundColor,
       body: Stack(
@@ -22,42 +25,46 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
           /// Background
           Positioned(
             top: 0,
-            right: 0,
             left: 0,
+            right: 0,
             child: Container(
-              height: 300,
+              height: res.hp(0.35),
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("images/background.jpg"),
+                  image: AssetImage("assets/images/bg2.jpg"),
                   fit: BoxFit.fill,
                 ),
               ),
               child: Container(
-                padding: const EdgeInsets.only(top: 90, left: 20),
-                color: const Color(0xFF3b5999).withOpacity(.85),
+                padding: EdgeInsets.only(top: res.hp(0.12), left: res.wp(0.05)),
+                //color: const Color.fromARGB(255, 72, 189, 117).withOpacity(.85),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     RichText(
                       text: TextSpan(
-                        text: "Welcome to",
+                        text: "Bienvenue à",
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: res.text(0.035),
                           letterSpacing: 2,
                           color: Colors.yellow[700],
                         ),
                         children: const [
                           TextSpan(
-                            text: " Rizona,",
+                            text: " Demai-App,",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 5),
-                    const Text(
-                      "Signup to Continue",
-                      style: TextStyle(letterSpacing: 1, color: Colors.white),
+                    SizedBox(height: res.hp(0.01)),
+                    Text(
+                      "Inscrivez-vous pour continuer",
+                      style: TextStyle(
+                        letterSpacing: 1,
+                        color: Colors.white,
+                        fontSize: res.text(0.018),
+                      ),
                     ),
                   ],
                 ),
@@ -65,174 +72,205 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
             ),
           ),
 
-          /// Formulaire
+          /// Formulaire + bouton collé
           Positioned(
-            top: 200,
+            top: res.hp(0.25),
             child: Container(
-              height: 420,
-              padding: const EdgeInsets.all(20),
-              width: MediaQuery.of(context).size.width - 40,
-              margin: const EdgeInsets.symmetric(horizontal: 20),
+              padding: res.paddingAll(0.05),
+              width: res.wp(0.9),
+              margin: EdgeInsets.symmetric(horizontal: res.wp(0.05)),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(res.wp(0.03)),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.3),
-                    blurRadius: 15,
-                    spreadRadius: 5,
+                    blurRadius: res.wp(0.04),
+                    spreadRadius: res.wp(0.01),
                   ),
                 ],
               ),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    /// Onglets Inscription / Connexion
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+              child: Column(
+                children: [
+                  SingleChildScrollView(
+                    child: Column(
                       children: [
-                        Column(
+                        /// Onglets Inscription / Connexion
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            const Text(
-                              "INSCRIPTION",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.orange,
-                              ),
+                            Column(
+                              children: [
+                                Text(
+                                  "INSCRIPTION",
+                                  style: TextStyle(
+                                    fontSize: res.text(0.02),
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.orange,
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: res.hp(0.005)),
+                                  height: res.hp(0.0025),
+                                  width: res.wp(0.2),
+                                  color: Colors.orange,
+                                ),
+                              ],
                             ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 3),
-                              height: 2,
-                              width: 80,
-                              color: Colors.orange,
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  "/ConnexionScreen",
+                                );
+                              },
+                              child: Text(
+                                "CONNEXION",
+                                style: TextStyle(
+                                  fontSize: res.text(0.02),
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey,
+                                ),
+                              ),
                             ),
                           ],
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushReplacementNamed(
-                              context,
-                              "/ConnexionScreen",
-                            );
-                          },
-                          child: const Text(
-                            "CONNEXION",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
+                        SizedBox(height: res.hp(0.02)),
+
+                        /// Champs
+                        buildTextField(Icons.person, "Username", false, false, res),
+                        buildTextField(Icons.email, "Email", false, true, res),
+                        buildTextField(Icons.lock, "Password", true, false, res),
+
+                        /// Choix du rôle (Donateur / Receveur)
+                        Padding(
+                          padding: EdgeInsets.only(top: res.hp(0.01)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton.icon(
+                                onPressed: () => setState(() => isMale = true),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: isMale
+                                      ? Pallet.textColor2
+                                      : Colors.grey.shade200,
+                                  foregroundColor:
+                                      isMale ? Colors.white : Colors.black,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(res.wp(0.04)),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: res.wp(0.05),
+                                    vertical: res.hp(0.015),
+                                  ),
+                                ),
+                                icon: const Icon(Icons.volunteer_activism),
+                                label: Text(
+                                  "Donateur",
+                                  style: TextStyle(fontSize: res.text(0.016)),
+                                ),
+                              ),
+                              SizedBox(width: res.wp(0.05)),
+                              ElevatedButton.icon(
+                                onPressed: () => setState(() => isMale = false),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: !isMale
+                                      ? Pallet.textColor2
+                                      : Colors.grey.shade200,
+                                  foregroundColor:
+                                      !isMale ? Colors.white : Colors.black,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(res.wp(0.04)),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: res.wp(0.05),
+                                    vertical: res.hp(0.015),
+                                  ),
+                                ),
+                                icon: const Icon(Icons.person),
+                                label: Text(
+                                  "Receveur",
+                                  style: TextStyle(fontSize: res.text(0.016)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        /// Terms
+                        Padding(
+                          padding: res.paddingSymmetric(
+                              vertical: 0.03, horizontal: 0.04),
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: const TextSpan(
+                              text:
+                                  "En appuyant sur « Soumettre », vous acceptez nos ",
+                              style: TextStyle(color: Colors.black54),
+                              children: [
+                                TextSpan(
+                                  text: "Conditions générales",
+                                  style: TextStyle(color: Colors.orange),
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                  ),
 
-                    /// Champs
-                    buildTextField(Icons.person, "Username", false, false),
-                    buildTextField(Icons.email, "Email", false, true),
-                    buildTextField(Icons.lock, "Password", true, false),
-
-                    /// Choix du rôle (Donateur / Receveur)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10, left: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              setState(() {
-                                isMale = true;
-                              });
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: isMale
-                                  ? Pallet.textColor2
-                                  : Colors.grey.shade200,
-                              foregroundColor: isMale
-                                  ? Colors.white
-                                  : Colors.black,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 10,
-                              ),
-                            ),
-                            icon: const Icon(Icons.volunteer_activism),
-                            label: const Text("Donateur"),
-                          ),
-                          const SizedBox(width: 20),
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              setState(() {
-                                isMale = false;
-                              });
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: !isMale
-                                  ? Pallet.textColor2
-                                  : Colors.grey.shade200,
-                              foregroundColor: !isMale
-                                  ? Colors.white
-                                  : Colors.black,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 10,
-                              ),
-                            ),
-                            icon: const Icon(Icons.person),
-                            label: const Text("Receveur"),
+                  /// ✅ Bouton Submit collé
+                  SizedBox(height: res.hp(0.01)),
+                  GestureDetector(
+                    onTap: () =>
+                        Navigator.pushReplacementNamed(context, "/ConnexionScreen"),
+                    child: Container(
+                      height: res.wp(0.22),
+                      width: res.wp(0.22),
+                      padding: EdgeInsets.all(res.wp(0.04)),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(res.wp(0.5)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(.3),
+                            spreadRadius: res.wp(0.01),
+                            blurRadius: res.wp(0.04),
                           ),
                         ],
                       ),
-                    ),
-
-                    /// Terms
-                    Container(
-                      width: 200,
-                      margin: const EdgeInsets.only(top: 20),
-                      child: RichText(
-                        textAlign: TextAlign.center,
-                        text: const TextSpan(
-                          text: "By pressing 'Submit' you agree to our ",
-                          style: TextStyle(color: Colors.black54),
-                          children: [
-                            TextSpan(
-                              text: "Terms & Conditions",
-                              style: TextStyle(color: Colors.orange),
-                            ),
-                          ],
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Colors.orange.shade200, Colors.red.shade400],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(res.wp(0.08)),
                         ),
+                        child: const Icon(Icons.arrow_forward, color: Colors.white),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
 
-          /// Bouton Submit
-          buildBottomHalfContainer(),
-
           /// Réseaux sociaux
           Positioned(
-            top: MediaQuery.of(context).size.height - 120,
-            right: 0,
+            top: res.hp(0.9),
             left: 0,
+            right: 0,
             child: Column(
               children: [
-                const Text(
-                  "Or Signup with",
-                  style: TextStyle(fontSize: 14, color: Colors.black54),
+                Text(
+                  "Ou inscrivez-vous avec",
+                  style: TextStyle(fontSize: res.text(0.015), color: Colors.black54),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(top: 15),
+                  margin: EdgeInsets.only(top: res.hp(0.015)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -240,11 +278,13 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                         FontAwesomeIcons.facebookF,
                         "Facebook",
                         Pallet.facebookColor,
+                        res,
                       ),
                       buildTextButton(
                         FontAwesomeIcons.google,
                         "Google",
                         Pallet.googleColor,
+                        res,
                       ),
                     ],
                   ),
@@ -257,73 +297,32 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
     );
   }
 
-  /// ✅ Bouton Submit
-  Widget buildBottomHalfContainer() {
-    return Positioned(
-      top: 560,
-      right: 0,
-      left: 0,
-      child: Center(
-        child: GestureDetector(
-          onTap: () {
-            Navigator.pushReplacementNamed(context, "/ConnexionScreen");
-          },
-          child: Container(
-            height: 90,
-            width: 90,
-            padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(50),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(.3),
-                  spreadRadius: 1.5,
-                  blurRadius: 10,
-                ),
-              ],
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.orange.shade200, Colors.red.shade400],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: const Icon(Icons.arrow_forward, color: Colors.white),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  TextButton buildTextButton(IconData icon, String title, Color color) {
+  TextButton buildTextButton(
+      IconData icon, String title, Color color, Responsive res) {
     return TextButton(
       onPressed: () {},
       style: TextButton.styleFrom(
-        minimumSize: const Size(140, 40),
+        minimumSize: Size(res.wp(0.35), res.hp(0.05)),
         backgroundColor: color,
         foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(res.wp(0.05))),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: [Icon(icon, size: 20), const SizedBox(width: 8), Text(title)],
+        children: [
+          Icon(icon, size: res.text(0.02)),
+          SizedBox(width: res.wp(0.02)),
+          Text(title)
+        ],
       ),
     );
   }
 
   Widget buildTextField(
-    IconData icon,
-    String hintText,
-    bool isPassword,
-    bool isEmail,
-  ) {
+      IconData icon, String hintText, bool isPassword, bool isEmail, Responsive res) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
+      padding: EdgeInsets.only(bottom: res.hp(0.015)),
       child: TextField(
         obscureText: isPassword,
         keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
@@ -331,13 +330,13 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
           prefixIcon: Icon(icon, color: Pallet.iconColor),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Pallet.textColor1),
-            borderRadius: const BorderRadius.all(Radius.circular(35.0)),
+            borderRadius: BorderRadius.all(Radius.circular(res.wp(0.09))),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Pallet.textColor1),
-            borderRadius: const BorderRadius.all(Radius.circular(35.0)),
+            borderRadius: BorderRadius.all(Radius.circular(res.wp(0.09))),
           ),
-          contentPadding: const EdgeInsets.all(10),
+          contentPadding: EdgeInsets.all(res.wp(0.03)),
           hintText: hintText,
         ),
       ),

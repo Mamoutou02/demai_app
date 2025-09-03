@@ -1,7 +1,9 @@
 import 'package:demai_app/data/palletCouleurs.dart';
+import 'package:demai_app/pages/donateurs/donateurs.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:demai_app/data/responsive.dart'; 
 
 class ConnexionScreen extends StatefulWidget {
   const ConnexionScreen({super.key});
@@ -15,6 +17,8 @@ class _ConnexionScreenState extends State<ConnexionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final res = Responsive(context);
+
     return Scaffold(
       backgroundColor: Pallet.backgroundColor,
       body: Stack(
@@ -25,21 +29,21 @@ class _ConnexionScreenState extends State<ConnexionScreen> {
             right: 0,
             left: 0,
             child: Container(
-              height: 300,
+              height: res.hp(0.4),
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("images/background.jpg"),
+                  image: AssetImage("assets/images/bg.jpg"),
                   fit: BoxFit.fill,
                 ),
               ),
               child: Container(
-                padding: const EdgeInsets.only(top: 90, left: 20),
-                color: const Color(0xFF3b5999).withOpacity(.85),
+                padding: EdgeInsets.only(top: res.hp(0.12), left: res.wp(0.05)),
+                //color: const Color.fromARGB(255, 72, 189, 117).withOpacity(.85),
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Welcome Back",
+                      "Content de te revoir",
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
@@ -48,7 +52,7 @@ class _ConnexionScreenState extends State<ConnexionScreen> {
                     ),
                     SizedBox(height: 5),
                     Text(
-                      "Signin to Continue",
+                      "Connectez-vous pour continuer",
                       style: TextStyle(letterSpacing: 1, color: Colors.white),
                     ),
                   ],
@@ -59,12 +63,11 @@ class _ConnexionScreenState extends State<ConnexionScreen> {
 
           // Formulaire
           Positioned(
-            top: 200,
+            top: res.hp(0.3),
             child: Container(
-              height: 280,
-              padding: const EdgeInsets.all(20),
-              width: MediaQuery.of(context).size.width - 40,
-              margin: const EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.all(res.wp(0.05)),
+              width: res.wp(0.9),
+              margin: EdgeInsets.symmetric(horizontal: res.wp(0.05)),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(15),
@@ -76,156 +79,147 @@ class _ConnexionScreenState extends State<ConnexionScreen> {
                   ),
                 ],
               ),
-              child: Column(
-                children: [
-                  // Onglets Connexion / Inscription
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Column(
-                        children: [
-                          const Text(
-                            "CONNEXION",
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // Onglets Connexion / Inscription
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          children: [
+                            const Text(
+                              "CONNEXION",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.orange,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: res.hp(0.005)),
+                              height: 2,
+                              width: res.wp(0.15),
+                              color: Colors.orange,
+                            ),
+                          ],
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacementNamed(
+                              context,
+                              "/InscriptionScreen",
+                            );
+                          },
+                          child: const Text(
+                            "INSCRIPTION",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: Colors.orange,
+                              color: Colors.grey,
                             ),
                           ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 3),
-                            height: 2,
-                            width: 60,
-                            color: Colors.orange,
-                          ),
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushReplacementNamed(
-                            context,
-                            "/InscriptionScreen",
-                          );
-                        },
-                        child: const Text(
-                          "INSCRIPTION",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: res.hp(0.03)),
+
+                    // Champs
+                    buildTextField(Icons.email, "Email", false, true),
+                    buildTextField(Icons.lock, "Password", true, false),
+
+                    // Options Remember me / Forgot Password
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: isRememberMe,
+                              activeColor: Pallet.textColor2,
+                              onChanged: (value) {
+                                setState(() {
+                                  isRememberMe = !isRememberMe;
+                                });
+                              },
+                            ),
+                            Text("Remember me", style: TextStyle(fontSize: res.text(0.015))),
+                          ],
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Forgot Password?",
+                            style: TextStyle(fontSize: res.text(0.015)),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
+                      ],
+                    ),
 
-                  // Champs
-                  buildTextField(Icons.email, "Email", false, true),
-                  buildTextField(Icons.lock, "Password", true, false),
+                    SizedBox(height: res.hp(0.02)),
 
-                  // Options
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: isRememberMe,
-                            activeColor: Pallet.textColor2,
-                            onChanged: (value) {
-                              setState(() {
-                                isRememberMe = !isRememberMe;
-                              });
-                            },
+                    // 🔶 Bouton Orange collé à la carte
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const donateur()),
+                        );
+                      },
+                      child: Container(
+                        height: res.wp(0.22),
+                        width: res.wp(0.22),
+                        padding: EdgeInsets.all(res.wp(0.04)),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(res.wp(0.5)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(.3),
+                              spreadRadius: res.wp(0.01),
+                              blurRadius: res.wp(0.04),
+                            ),
+                          ],
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Colors.orange.shade200, Colors.red.shade400],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(res.wp(0.08)),
                           ),
-                          const Text("Remember me"),
-                        ],
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          "Forgot Password?",
-                          style: TextStyle(fontSize: 12),
+                          child: const Icon(Icons.arrow_forward, color: Colors.white),
                         ),
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
 
-          // Bouton Login
-          buildBottomHalfContainer(),
-
           // Réseaux sociaux
           Positioned(
-            top: MediaQuery.of(context).size.height - 120,
+            top: res.hp(0.85),
             right: 0,
             left: 0,
             child: Column(
               children: [
-                const Text("Or Signin with"),
-                Container(
-                  margin: const EdgeInsets.only(top: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      buildTextButton(
-                        FontAwesomeIcons.facebookF,
-                        "Facebook",
-                        Pallet.facebookColor,
-                      ),
-                      buildTextButton(
-                        FontAwesomeIcons.google,
-                        "Google",
-                        Pallet.googleColor,
-                      ),
-                    ],
-                  ),
+                const Text("Connectez-vous avec"),
+                SizedBox(height: res.hp(0.015)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    buildTextButton(FontAwesomeIcons.facebookF, "Facebook", Pallet.facebookColor),
+                    buildTextButton(FontAwesomeIcons.google, "Google", Pallet.googleColor),
+                  ],
                 ),
               ],
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget buildBottomHalfContainer() {
-    return Positioned(
-      top: 480,
-      right: 0,
-      left: 0,
-      child: Center(
-        child: Container(
-          height: 90,
-          width: 90,
-          padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(50),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(.3),
-                spreadRadius: 1.5,
-                blurRadius: 10,
-              ),
-            ],
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.orange.shade200, Colors.red.shade400],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: const Icon(Icons.arrow_forward, color: Colors.white),
-          ),
-        ),
       ),
     );
   }
@@ -244,14 +238,9 @@ class _ConnexionScreenState extends State<ConnexionScreen> {
     );
   }
 
-  Widget buildTextField(
-    IconData icon,
-    String hintText,
-    bool isPassword,
-    bool isEmail,
-  ) {
+  Widget buildTextField(IconData icon, String hintText, bool isPassword, bool isEmail) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
+      padding: EdgeInsets.only(bottom: 8.0),
       child: TextField(
         obscureText: isPassword,
         keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
@@ -265,7 +254,7 @@ class _ConnexionScreenState extends State<ConnexionScreen> {
             borderSide: BorderSide(color: Pallet.textColor1),
             borderRadius: const BorderRadius.all(Radius.circular(35.0)),
           ),
-          contentPadding: const EdgeInsets.all(10),
+          contentPadding: EdgeInsets.all(10),
           hintText: hintText,
         ),
       ),

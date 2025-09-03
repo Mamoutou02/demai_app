@@ -128,7 +128,7 @@ class _OnboardingState extends State<Onboarding> {
                             onPressed: () {
                               if (currentIndex == contentsList.length - 1) {
                                 Navigator.pushReplacementNamed(
-                                    context, "/connexion");
+                                    context, "/ConnexionScreen");
                               } else {
                                 _controller!.nextPage(
                                   duration: const Duration(milliseconds: 500),
