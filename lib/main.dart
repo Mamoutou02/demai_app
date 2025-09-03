@@ -1,6 +1,7 @@
+import 'package:demai_app/pages/connexion/connexion.dart';
+import 'package:demai_app/pages/inscription/inscription.dart';
 import 'package:flutter/material.dart';
 import 'pages/onboarding.dart';
-import 'pages/connexion.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
       initialRoute: "/", // Onboarding est la page initiale
       routes: {
         "/": (context) => const Onboarding(),
-        "/connexion": (context) => const Connexion(),
+        "/InscriptionScreen": (context) => const InscriptionScreen(),
+        "/ConnexionScreen": (context) => const ConnexionScreen(),
       },
     );
   }
