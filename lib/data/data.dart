@@ -18,30 +18,30 @@ class UnbordingContent {
 List<UnbordingContent> contentsList = [
   UnbordingContent(
     image: "assets/images/demarage1.svg",
-    title: "Find Food You Love",
+    title: "Un repas sauvé, une vie respectée",
     discription:
-        "Discover the best foods from over 1,000\nrestaurants and fast delivery to your doorstep",
+        "Chaque geste anti-gaspi est une réponse concrète à ceux qui manquent de tout.",
     backgroundColor: const Color(0xffF0CF69),
   ),
   UnbordingContent(
     image: "assets/images/demarage2.svg",
-    title: "Fast Delivery",
+    title: "Mangeons juste, jetons moins",
     discription:
-        "Fast food delivery to your home, office\nwherever you are just stay at home with us",
+        "Chaque repas bien pensé est une victoire contre le gaspillage et pour la planète",
     backgroundColor: const Color(0xffB7ABFD),
   ),
   UnbordingContent(
     image: "assets/images/demarage3.svg",
-    title: "Live Tracking",
+    title: "La faim ne se combat pas avec des déchets",
     discription:
-        "Real time tracking of your food on the app\nonce you placed the order",
+        "En valorisant chaque aliment, tu participes à un monde plus juste et solidaire.",
     backgroundColor: const Color(0xff95B6FF),
   ),
   UnbordingContent(
     image: "assets/images/demarage4.svg",
-    title: "Live Tracking",
+    title: "Moins de gaspillage, plus d’espoir",
     discription:
-        "Real time tracking of your food on the app\nonce you placed the order",
+        "Réduire le gaspillage, c’est nourrir l’avenir de ceux qui en ont besoin aujourd’hui",
     backgroundColor: const Color(0xff95B6FF),
   ),
 ];

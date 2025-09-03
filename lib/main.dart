@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'pages/onboarding.dart';
-import 'pages/connexion.dart';
+import 'connexion/connexion.dart';
 
 void main() {
   runApp(const MyApp());

@@ -117,6 +117,7 @@ class _OnboardingState extends State<Onboarding> {
                           child: const Text(
                             "Skip",
                             style: TextStyle(color: Colors.white70),
+
                           ),
                         ),
                       ],
