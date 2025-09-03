@@ -1,7 +1,7 @@
+import 'package:demai_app/data/onboardingConfig.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:demai_app/data/data.dart'; // Assure-toi que contentsList est défini ici
 
 class Onboarding extends StatefulWidget {
   const Onboarding({super.key});
@@ -32,139 +32,145 @@ class _OnboardingState extends State<Onboarding> {
     return Scaffold(
       backgroundColor: contentsList[currentIndex].backgroundColor,
       body: SafeArea(
-        child: Column(
-          children: [
-            // Contenu des pages
-            Expanded(
-              flex: 5,
-              child: PageView.builder(
-                controller: _controller,
-                itemCount: contentsList.length,
-                onPageChanged: (index) {
-                  setState(() {
-                    currentIndex = index;
-                    percentage = (index + 1) / contentsList.length;
-                  });
-                },
-                itemBuilder: (context, index) {
-                  return Column(
+        child: PageView.builder(
+          controller: _controller,
+          itemCount: contentsList.length,
+          onPageChanged: (index) {
+            setState(() {
+              currentIndex = index;
+              percentage = (index + 1) / contentsList.length;
+            });
+          },
+          itemBuilder: (context, index) {
+            final content = contentsList[index];
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Image en haut
+                Expanded(
+                  flex: 5,
+                  child: Center(
+                    child: SvgPicture.asset(
+                      content.image,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+
+                // Texte + boutons en bas
+                Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              contentsList[index].title,
-                              style: const TextStyle(
-                                fontFamily: "SF-Pro",
-                                fontWeight: FontWeight.w700,
-                                fontSize: 28,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            Text(
-                              contentsList[index].discription,
-                              style: const TextStyle(
-                                fontFamily: "SF-Pro",
-                                fontWeight: FontWeight.w400,
-                                fontSize: 18,
-                                color: Colors.white70,
-                              ),
-                            ),
-                          ],
+                      Text(
+                        content.title,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontFamily: "SF-Pro",
+                          fontWeight: FontWeight.w700,
+                          fontSize: 28,
+                          color: Colors.white,
                         ),
                       ),
-                      SvgPicture.asset(contentsList[index].image),
-                    ],
-                  );
-                },
-              ),
-            ),
-
-            // Indicateurs + boutons
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Dots + Skip
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Row(
-                          children: List.generate(
-                            contentsList.length,
-                            (index) => buildDot(index),
-                          ),
+                      const SizedBox(height: 12),
+                      Text(
+                        content.discription,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontFamily: "SF-Pro",
+                          fontWeight: FontWeight.w400,
+                          fontSize: 18,
+                          color: Colors.white70,
                         ),
-                        const SizedBox(height: 10),
-                        CupertinoButton(
-                          onPressed: () {
-                            _controller!.animateToPage(
-                              contentsList.length - 1,
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeInOut,
-                            );
-                            setState(() {
-                              currentIndex = contentsList.length - 1;
-                              percentage = 1.0;
-                            });
-                          },
-                          child: const Text(
-                            "Skip",
-                            style: TextStyle(color: Colors.white70),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 20),
 
-                    // Next / Check
-                    CupertinoButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        if (currentIndex == contentsList.length - 1) {
-                          Navigator.pushReplacementNamed(context, "/connexion");
-                        } else {
-                          _controller!.nextPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                          );
-                        }
-                      },
-                      child: Stack(
-                        alignment: Alignment.center,
+                      // Dots + boutons
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(
-                            height: 55,
-                            width: 55,
-                            child: CircularProgressIndicator(
-                              value: percentage,
-                              backgroundColor: Colors.white38,
-                              valueColor:
-                                  const AlwaysStoppedAnimation<Color>(Colors.white),
-                            ),
+                          // Dots + Skip
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: List.generate(
+                                  contentsList.length,
+                                  (i) => buildDot(i),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              CupertinoButton(
+                                onPressed: () {
+                                  _controller!.animateToPage(
+                                    contentsList.length - 1,
+                                    duration:
+                                        const Duration(milliseconds: 500),
+                                    curve: Curves.easeInOut,
+                                  );
+                                  setState(() {
+                                    currentIndex = contentsList.length - 1;
+                                    percentage = 1.0;
+                                  });
+                                },
+                                child: const Text(
+                                  "Skip",
+                                  style: TextStyle(color: Colors.white70),
+                                ),
+                              ),
+                            ],
                           ),
-                          CircleAvatar(
-                            backgroundColor: Colors.white,
-                            child: Icon(
-                              currentIndex == contentsList.length - 1
-                                  ? Icons.check
-                                  : Icons.arrow_forward_ios_outlined,
-                              color: contentsList[currentIndex].backgroundColor,
+
+                          // Next / Check
+                          CupertinoButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              if (currentIndex == contentsList.length - 1) {
+                                Navigator.pushReplacementNamed(
+                                    context, "/connexion");
+                              } else {
+                                _controller!.nextPage(
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeInOut,
+                                );
+                              }
+                            },
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 55,
+                                  width: 55,
+                                  child: CircularProgressIndicator(
+                                    value: percentage,
+                                    backgroundColor: Colors.white38,
+                                    valueColor:
+                                        const AlwaysStoppedAnimation<Color>(
+                                            Colors.white),
+                                  ),
+                                ),
+                                CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  child: Icon(
+                                    currentIndex == contentsList.length - 1
+                                        ? Icons.check
+                                        : Icons.arrow_forward_ios_outlined,
+                                    color: contentsList[currentIndex]
+                                        .backgroundColor,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ),
-          ],
+              ],
+            );
+          },
         ),
       ),
     );
